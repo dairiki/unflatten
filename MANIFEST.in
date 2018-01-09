@@ -1,0 +1,4 @@
+include LICENSE.txt README.rst CHANGES.rst
+include tox.ini
+exclude .gitignore
+recursive-include tests *.py
