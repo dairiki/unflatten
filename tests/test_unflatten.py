@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
+from itertools import chain, permutations
+
 import pytest
 
 from unflatten import (
     unflatten,
     _parse_key,
     _unparse_key,
-    DICT,
-    LIST,
     )
 
 
@@ -20,7 +20,7 @@ from unflatten import (
         ('a[0]', 'a0-dup'),
         ],
      {'a': ['a0-dup']}),
-    ('compex',
+    ('complex',
      [
         ('b', 'b'),
         ('a[0].b', 'a0b'),
@@ -33,6 +33,10 @@ from unflatten import (
          ],
       'b': 'b',
       }),
+    ('unicode',
+     [(u'fü.baß', 'x')],
+     {u'fü': {u'baß': 'x'}}
+     ),
     ])
 def test_unflatten(label, flattened, unflattened):
     assert unflatten(flattened) == unflattened
@@ -41,20 +45,20 @@ def test_unflatten(label, flattened, unflattened):
 def test_unflatten_missing_array_key():
     with pytest.raises(ValueError) as ctx:
         unflatten({'a[1]': 'a1'})
-    assert str(ctx.value).startswith('missing')
-    assert str(ctx.value).endswith('a[0]')
+    assert str(ctx.value).startswith('missing key')
+    assert 'a[0]' in str(ctx.value)
 
 
-@pytest.mark.parametrize('keys', [
+@pytest.mark.parametrize('keys', chain.from_iterable(map(permutations, [
     ('a', 'a[0]'),
     ('a', 'a.b'),
     ('a.b', 'a[0]'),
     ('a', 'a.b', 'a[0]'),
-    ])
+    ])), ids=repr)
 def test_unflatten_mixed_node_types(keys):
     with pytest.raises(ValueError) as ctx:
         unflatten((key, 'val') for key in keys)
-    assert str(ctx.value).startswith("mixture")
+    assert str(ctx.value).startswith("conflicting types")
 
 
 def test_unflatten_nonstring_key():
@@ -64,10 +68,14 @@ def test_unflatten_nonstring_key():
 
 
 @pytest.mark.parametrize('key, parsed', [
-    ('foo', ((DICT, 'foo'),)),
-    ('foo.bar', ((DICT, 'foo'), (DICT, 'bar'))),
-    ('foo[1]', ((DICT, 'foo'), (LIST, 1))),
-    ('foo[1][2].bar', ((DICT, 'foo'), (LIST, 1), (LIST, 2), (DICT, 'bar'))),
+    ('foo',
+     ('foo',)),
+    ('foo.bar',
+     ('foo', 'bar')),
+    ('foo[1]',
+     ('foo', 1)),
+    ('foo[1][2].bar',
+     ('foo', 1, 2, 'bar')),
     ])
 class Test_parse(object):
     def test_parse_key(self, key, parsed):
