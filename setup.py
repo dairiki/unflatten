@@ -41,7 +41,8 @@ setup(
     url='https://github.com/dairiki/unflatten',
     keywords='unflatten nested-dict',
 
-    packages=['unflatten'],
+    py_modules=['unflatten'],
+    package_dir={'': 'src'},
     install_requires=requires,
     setup_requires=pytest_runner,
     tests_require=tests_require,
