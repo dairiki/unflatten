@@ -2,7 +2,7 @@
 History
 *******
 
-Release 0.1 (unreleased)
-========================
+Release 0.1b1 (2018-01-09)
+==========================
 
 Initial release.

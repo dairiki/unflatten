@@ -2,7 +2,7 @@
 from setuptools import setup
 import sys
 
-VERSION = '0.1.dev0'
+VERSION = '0.1b1'
 
 with open('README.rst') as readme_file:
     README = readme_file.read()
