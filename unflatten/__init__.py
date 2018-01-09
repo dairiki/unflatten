@@ -6,8 +6,12 @@ from __future__ import absolute_import
 
 from operator import itemgetter
 import re
+import sys
 
-from .compat import string_types
+if sys.version_info[0] == 2:
+    string_type = basestring
+else:
+    string_type = str
 
 
 def unflatten(arg):
@@ -38,7 +42,7 @@ def unflatten(arg):
         obj = data
         for depth, (key, next_key) in enumerate(zip(parsed_key,
                                                     parsed_key[1:]), 1):
-            if isinstance(next_key, string_types):
+            if isinstance(next_key, string_type):
                 holder_type = _dict_holder
             else:
                 holder_type = _list_holder
@@ -50,7 +54,7 @@ def unflatten(arg):
                 raise ValueError(
                     "conflicting types %s and %s for key %r" % (
                         _node_type(obj[key]),
-                        holder_type.data_type.__name__,
+                        holder_type.node_type,
                         _unparse_key(parsed_key[:depth])))
             obj = obj[key]
 
@@ -62,14 +66,14 @@ def unflatten(arg):
         obj[last_key] = val
 
     for obj, key in reversed(holders):
-        obj[key] = obj[key].finish()
+        obj[key] = obj[key].getvalue()
 
     return data
 
 
 def _node_type(value):
     if isinstance(value, _holder):
-        return value.data_type.__name__
+        return value.node_type,
     else:
         return 'terminal'
 
@@ -93,16 +97,16 @@ class _holder(dict):
 
 
 class _dict_holder(_holder):
-    data_type = dict
+    node_type = dict
 
-    def finish(self):
+    def getvalue(self):
         return self.data
 
 
 class _list_holder(_holder):
-    data_type = list
+    node_type = list
 
-    def finish(self):
+    def getvalue(self):
         items = sorted(self.data.items(), key=itemgetter(0))
         value = []
         for n, (key, val) in enumerate(items):
@@ -114,27 +118,29 @@ class _list_holder(_holder):
         return value
 
 
-_INDEX_re = re.compile(r'\[(?P<ind>\d+)\]\Z')
+_dot_or_indexes_re = re.compile(r'(\.|(?:\[\d+\])+(?=\.|\Z))')
 
 
-def _parse_key(key):
-    if not isinstance(key, string_types):
+def _parse_key(flat_key):
+    if not isinstance(flat_key, string_type):
         raise TypeError("keys must be strings")
-    parts = []
-    for part in reversed(key.split('.')):
-        m = _INDEX_re.search(part)
-        while m:
-            parts.append(int(m.group('ind')))
-            part = part[:m.start()]
-            m = _INDEX_re.search(part)
-        parts.append(part)
-    return tuple(reversed(parts))
+
+    split_key = _dot_or_indexes_re.split(flat_key)
+    parts = [split_key[0]]
+    for i in range(1, len(split_key), 2):
+        sep = split_key[i]
+        if sep == '.':
+            parts.append(split_key[i + 1])
+        else:
+            # Note that split_key[i + 1] is a bogus empty string.
+            parts.extend(map(int, re.findall(r'\d+', sep)))
+    return parts
 
 
 def _unparse_key(parsed):
     bits = []
     for part in parsed:
-        if isinstance(part, string_types):
+        if isinstance(part, string_type):
             fmt = ".%s" if bits else "%s"
         else:
             fmt = "[%d]"

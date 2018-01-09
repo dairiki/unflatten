@@ -57,7 +57,7 @@ def test_unflatten_missing_array_key():
     ])), ids=repr)
 def test_unflatten_mixed_node_types(keys):
     with pytest.raises(ValueError) as ctx:
-        unflatten((key, 'val') for key in keys)
+        unflatten((key, {'val_for_key': key}) for key in keys)
     assert str(ctx.value).startswith("conflicting types")
 
 
@@ -69,17 +69,29 @@ def test_unflatten_nonstring_key():
 
 @pytest.mark.parametrize('key, parsed', [
     ('foo',
-     ('foo',)),
+     ['foo']),
     ('foo.bar',
-     ('foo', 'bar')),
+     ['foo', 'bar']),
     ('foo[1]',
-     ('foo', 1)),
+     ['foo', 1]),
+    ('[1]',
+     ['', 1]),
+    ('.',
+     ['', '']),
+    ('.foo',
+     ['', 'foo']),
+    ('.[0]',
+     ['', '', 0]),
+    ('foo[1][2]',
+     ['foo', 1, 2]),
     ('foo[1][2].bar',
-     ('foo', 1, 2, 'bar')),
+     ['foo', 1, 2, 'bar']),
+    ('foo[1][2]bar',
+     ['foo[1][2]bar']),
     ])
 class Test_parse(object):
     def test_parse_key(self, key, parsed):
-        assert _parse_key(key) == parsed
+        assert _parse_key(key) == list(parsed)
 
     def test_unparse_key(self, key, parsed):
         assert _unparse_key(parsed) == key
