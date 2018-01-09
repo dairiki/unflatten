@@ -11,15 +11,6 @@ Description
 This package provides a function which can unpack a flat dictionary
 into a ``dict`` with nested ``dict``\s and ``list``\s.
 
-For example::
-
-    >>> unflatten({
-    ...    'a[0].b': 'a0b',
-    ...    'a[1].c': 'a1c',
-    ...    'd.e': 'de',
-    ...    })
-    {'a': [{'b': 'a0b'}, {'c': 'a1c'}], 'd': {'e': 'de'}}
-
 Development takes place on github_.
 The package is installable from PyPI_
 
@@ -30,6 +21,52 @@ The package is installable from PyPI_
 Synopsis
 ********
 
+Nested dicts::
+
+  >>> from unflatten import unflatten
+
+  >>> unflatten({'foo.bar': 'val'})
+  {'foo': {'bar': 'val'}}
+
+Nested ``list``::
+
+  >>> unflatten({'foo[0]': 'x', 'foo[1]': 'y'})
+  {'foo': ['x', 'y']}
+
+Nested ``list``\s and ``dict``\s::
+
+  >>> unflatten({
+  ...     'foo[0][0]': 'a',
+  ...     'foo[0][1]': 'b',
+  ...     'foo[1].x': 'c',
+  ...      })
+  {'foo': [['a', 'b'], {'x': 'c'}]}
+
+
+*****
+Notes
+*****
+
+``Unflatten`` take a single argument which should either be a ``dict``
+(or an object with a dict-like ``.items()`` or ``.iteritems()``
+method) or a sequence of ``(key, value)`` pairs.
+All keys in the dict or sequence must be strings.
+(Under python 2, keys must be instances of ``basestring``; under
+python 3, keys just be instances of ``str``.)
+
+
+``Unflatten`` always returns a ``dict``.  By way of example::
+
+  >>> unflatten([('[0]', 'x')])
+  {'': ['x']}
+
+For ``list``\-valued nodes, all indexes must be present in the input
+(flattened) mapping, otherwise a ``ValueError`` will be thrown::
+
+  >>> unflatten({'a[0]': 'x', 'a[2]': 'y'})
+  Traceback (most recent call last):
+  ...
+  ValueError: missing key 'a[1]'
 
 *******
 Authors

@@ -17,15 +17,34 @@ else:
 def unflatten(arg):
     """Unflatten nested dict/array data.
 
-    Example::
+    This function takes a single argument which may either be a
+    ``dict`` (or any object having a dict-like ``.items()`` or
+    ``.iteritems()`` method) or a sequence of ``(key, value)`` pairs.
+    The keys in the ``dict`` or sequence should must all be strings.
 
-    >>> unflatten({'foo[0].bar' : 'val'})
-    {
-        'foo': [
-            {'bar': 'val},
-            ],
-        }
+    Examples
+    --------
 
+    Nested ``dict``\s::
+
+    >>> unflatten({'foo.bar': 'val'})
+    {'foo': {'bar': 'val'}}
+
+    Nested ``list``::
+
+    >>> unflatten({'foo[0]': 'val', 'foo[1]': 'bar'})
+    {'foo': ['val', 'bar']}
+
+    Nested ``list``\s::
+
+    >>> unflatten({'foo[0][0]': 'val'})
+    {'foo': [['val']]}
+
+    Lists of ``dict``\s::
+
+    >>> unflatten({'foo[0].bar': 'val',
+    ...            'foo[1].baz': 'x'})
+    {'foo': [{'bar': 'val'}, {'baz': 'x'}]}
 
     """
     if hasattr(arg, 'iteritems'):
