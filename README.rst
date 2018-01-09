@@ -9,7 +9,7 @@ Description
 ***********
 
 This package provides a function which can unpack a flat dictionary
-into a ``dict`` with nested ``dict``\s and ``list``\s.
+into a structured ``dict`` with nested sub-dicts and/or sub-lists.
 
 Development takes place on github_.
 The package is installable from PyPI_
@@ -28,12 +28,12 @@ Nested dicts::
   >>> unflatten({'foo.bar': 'val'})
   {'foo': {'bar': 'val'}}
 
-Nested ``list``::
+Nested list::
 
   >>> unflatten({'foo[0]': 'x', 'foo[1]': 'y'})
   {'foo': ['x', 'y']}
 
-Nested ``list``\s and ``dict``\s::
+Nested lists and dicts, intermixed::
 
   >>> unflatten({
   ...     'foo[0][0]': 'a',
@@ -60,7 +60,7 @@ python 3, keys just be instances of ``str``.)
   >>> unflatten([('[0]', 'x')])
   {'': ['x']}
 
-For ``list``\-valued nodes, all indexes must be present in the input
+For list-valued nodes, all indexes must be present in the input
 (flattened) mapping, otherwise a ``ValueError`` will be thrown::
 
   >>> unflatten({'a[0]': 'x', 'a[2]': 'y'})
