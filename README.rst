@@ -68,6 +68,15 @@ For list-valued nodes, all indexes must be present in the input
   ...
   ValueError: missing key 'a[1]'
 
+********
+See Also
+********
+
+The `morph`_ and `flattery`_ packages purport to implement similar functions.
+
+.. _morph: https://github.com/metagriffin/morph
+.. _flattery: https://github.com/acg/python-flattery
+
 *******
 Authors
 *******
