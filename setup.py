@@ -2,7 +2,7 @@
 from setuptools import setup
 import sys
 
-VERSION = '0.1b1.post1.dev0'
+VERSION = '0.1'
 
 with open('README.rst') as readme_file:
     README = readme_file.read()
@@ -25,7 +25,7 @@ setup(
     description="Unflatten dict to dict with nested dict/arrays",
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
