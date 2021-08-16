@@ -19,7 +19,7 @@ matrix:
       env: TOXENV=pypy3
     - python: 3.9
       env: TOXENV=py27,py39,coverage
-    - python: 3.6
+    - python: 3.9
       env: TOXENV=lint
 install:
   - travis_retry pip install tox

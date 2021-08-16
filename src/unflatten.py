@@ -9,7 +9,7 @@ import re
 import sys
 
 if sys.version_info[0] == 2:
-    string_type = basestring
+    string_type = basestring    # noqa: F821
 else:
     string_type = str
 

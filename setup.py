@@ -24,6 +24,7 @@ setup(
     version=VERSION,
     description="Unflatten dict to dict with nested dict/arrays",
     long_description=README + '\n\n' + CHANGES,
+    long_description_content_type="text/x-rst",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
