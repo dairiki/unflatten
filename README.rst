@@ -96,5 +96,6 @@ Authors
     :alt: Python versions
 
 .. |build status| image::
-    https://travis-ci.org/dairiki/unflatten.svg?branch=master
-    :target: https://travis-ci.org/dairiki/unflatten
+    https://github.com/dairiki/unflatten/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/dairiki/unflatten/actions/workflows/tests.yml
+ 
