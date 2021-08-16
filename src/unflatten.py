@@ -25,7 +25,7 @@ def unflatten(arg):
     Examples
     --------
 
-    Nested ``dict``\s::
+    Nested ``dict``\\s::
 
     >>> unflatten({'foo.bar': 'val'})
     {'foo': {'bar': 'val'}}
@@ -35,12 +35,12 @@ def unflatten(arg):
     >>> unflatten({'foo[0]': 'val', 'foo[1]': 'bar'})
     {'foo': ['val', 'bar']}
 
-    Nested ``list``\s::
+    Nested ``list``\\s::
 
     >>> unflatten({'foo[0][0]': 'val'})
     {'foo': [['val']]}
 
-    Lists of ``dict``\s::
+    Lists of ``dict``\\s::
 
     >>> unflatten({'foo[0].bar': 'val',
     ...            'foo[1].baz': 'x'})
