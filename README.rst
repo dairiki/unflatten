@@ -47,7 +47,7 @@ Nested lists and dicts, intermixed::
 Notes
 *****
 
-``Unflatten`` take a single argument which should either be a ``dict``
+``Unflatten`` takes a single argument which should either be a ``dict``
 (or an object with a dict-like ``.items()`` or ``.iteritems()``
 method) or a sequence of ``(key, value)`` pairs.
 All keys in the dict or sequence must be strings.
