@@ -3,5 +3,5 @@ exclude .pre-commit-config.yaml
 
 # these are redundant, as setuptools-scm includes everything in the git repo
 include LICENSE.txt README.md CHANGES.md
-include tox.ini .coveragerc
+include tox.ini
 recursive-include tests *.py

@@ -1,8 +1,0 @@
-[run]
-source_pkgs = unflatten
-parallel = true
-
-[paths]
-source =
-    src
-    */site-packages
