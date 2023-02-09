@@ -1,6 +1,12 @@
 
 ## History
 
+### Release 0.1.2 (unreleased)
+
+#### Testing
+
+- Test under python 3.10 and 3.11.
+
 ### Release 0.1.1 (2021-08-16)
 
 #### Nits
