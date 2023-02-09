@@ -4,12 +4,12 @@
 """
 from __future__ import absolute_import
 
-from operator import itemgetter
 import re
 import sys
+from operator import itemgetter
 
 if sys.version_info[0] == 2:
-    string_type = basestring    # noqa: F821
+    string_type = basestring  # noqa: F821
 else:
     string_type = str
 
@@ -47,9 +47,9 @@ def unflatten(arg):
     {'foo': [{'bar': 'val'}, {'baz': 'x'}]}
 
     """
-    if hasattr(arg, 'iteritems'):
+    if hasattr(arg, "iteritems"):
         items = arg.iteritems()
-    elif hasattr(arg, 'items'):
+    elif hasattr(arg, "items"):
         items = arg.items()
     else:
         items = arg
@@ -59,8 +59,7 @@ def unflatten(arg):
     for flat_key, val in items:
         parsed_key = _parse_key(flat_key)
         obj = data
-        for depth, (key, next_key) in enumerate(zip(parsed_key,
-                                                    parsed_key[1:]), 1):
+        for depth, (key, next_key) in enumerate(zip(parsed_key, parsed_key[1:]), 1):
             if isinstance(next_key, string_type):
                 holder_type = _dict_holder
             else:
@@ -71,17 +70,21 @@ def unflatten(arg):
                 holders.append((obj, key))
             elif not isinstance(obj[key], holder_type):
                 raise ValueError(
-                    "conflicting types %s and %s for key %r" % (
+                    "conflicting types %s and %s for key %r"
+                    % (
                         _node_type(obj[key]),
                         holder_type.node_type,
-                        _unparse_key(parsed_key[:depth])))
+                        _unparse_key(parsed_key[:depth]),
+                    )
+                )
             obj = obj[key]
 
         last_key = parsed_key[-1]
         if isinstance(obj.get(last_key), _holder):
             raise ValueError(
-                "conflicting types %s and terminal for key %r" % (
-                    _node_type(obj[last_key]), flat_key))
+                "conflicting types %s and terminal for key %r"
+                % (_node_type(obj[last_key]), flat_key)
+            )
         obj[last_key] = val
 
     for obj, key in reversed(holders):
@@ -92,9 +95,9 @@ def unflatten(arg):
 
 def _node_type(value):
     if isinstance(value, _holder):
-        return value.node_type,
+        return (value.node_type,)
     else:
-        return 'terminal'
+        return "terminal"
 
 
 class _holder(dict):
@@ -137,7 +140,7 @@ class _list_holder(_holder):
         return value
 
 
-_dot_or_indexes_re = re.compile(r'(\.|(?:\[\d+\])+(?=\.|\Z))')
+_dot_or_indexes_re = re.compile(r"(\.|(?:\[\d+\])+(?=\.|\Z))")
 
 
 def _parse_key(flat_key):
@@ -148,11 +151,11 @@ def _parse_key(flat_key):
     parts = [split_key[0]]
     for i in range(1, len(split_key), 2):
         sep = split_key[i]
-        if sep == '.':
+        if sep == ".":
             parts.append(split_key[i + 1])
         else:
             # Note that split_key[i + 1] is a bogus empty string.
-            parts.extend(map(int, re.findall(r'\d+', sep)))
+            parts.extend(map(int, re.findall(r"\d+", sep)))
     return parts
 
 
@@ -164,4 +167,4 @@ def _unparse_key(parsed):
         else:
             fmt = "[%d]"
         bits.append(fmt % part)
-    return ''.join(bits)
+    return "".join(bits)

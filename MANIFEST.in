@@ -1,4 +1,7 @@
+exclude .gitignore
+exclude .pre-commit-config.yaml
+
+# these are redundant, as setuptools-scm includes everything in the git repo
 include LICENSE.txt README.rst CHANGES.rst
 include tox.ini .coveragerc
-exclude .gitignore
 recursive-include tests *.py

@@ -98,4 +98,3 @@ Authors
 .. |build status| image::
     https://github.com/dairiki/unflatten/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/dairiki/unflatten/actions/workflows/tests.yml
- 
