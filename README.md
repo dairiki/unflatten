@@ -3,6 +3,7 @@
 [![Latest Version](https://img.shields.io/pypi/v/unflatten.svg)](https://pypi.python.org/pypi/unflatten/)
 [![Python versions](https://img.shields.io/pypi/pyversions/unflatten.svg)]( https://pypi.python.org/pypi/unflatten/)
 [![CI test status](https://github.com/dairiki/unflatten/actions/workflows/tests.yml/badge.svg)](https://github.com/dairiki/unflatten/actions/workflows/tests.yml)
+[![Trackgit Views](https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lhasvnk7wy5gn9qxjmlh)](https://trackgit.com)
 
 ## Description
 
