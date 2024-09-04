@@ -5,7 +5,10 @@
 
 #### Testing
 
-- Test under python 3.10 and 3.11.
+- Test under python 3.10, 3.11, and 3.12.
+
+- Fix tox config to cope with the fact that recent tox/virtualenv does
+  not support EOLed versions of python.
 
 ### Release 0.1.1 (2021-08-16)
 
