@@ -1,7 +1,11 @@
 
 ## History
 
-### Release 0.1.2 (unreleased)
+### Release 0.2.0 (2024-09-04)
+
+No substantive code changes from 0.1.1.
+
+#### Features
 
 - Added type annotations.
 
