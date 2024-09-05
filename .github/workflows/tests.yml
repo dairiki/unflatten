@@ -1,10 +1,9 @@
 name: Tests
 
 on:
-  push:
-    branches: ["*"]
-  pull_request:
-    branches: [main]
+  workflow_call:
+    # https://docs.github.com/en/actions/using-workflows/reusing-workflows
+  workflow_dispatch:
 
 jobs:
   tests:
@@ -93,3 +92,20 @@ jobs:
     - run: pre-commit run -a
     - run: tox r -e lint
       if: ${{ success() || failure() }}
+
+  build:
+    name: Build python package
+    needs: [coverage, lint]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - run: python -m pip install --upgrade pip
+    - run: python -m pip install build
+    - run: python -m build .
+    - uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
+        retention-days: 1       # save money
