@@ -20,8 +20,8 @@ jobs:
           - {python: pypy2.7, tox3: true}
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       id: setup-python
       with:
         python-version: ${{ matrix.python }}
@@ -46,10 +46,11 @@ jobs:
     - name: Test with tox
       run: tox
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
-        name: coverage-data
+        name: coverage-data-${{ matrix.python }}
         path: .coverage.*
+        include-hidden-files: true
 
   test-py27:
     name: Python 2.7
@@ -57,7 +58,7 @@ jobs:
     container: python:2.7-buster
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: python -m pip install --upgrade pip setuptools
     - name: Install tox3
       run: pip install 'tox<4' 'virtualenv<20.22.0'
@@ -65,27 +66,29 @@ jobs:
     - name: Test with tox
       run: tox -e py27
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
-        name: coverage-data
+        name: coverage-data-2.7
         path: .coverage.*
+        include-hidden-files: true
 
   coverage:
     needs: [tests, test-py27]
     if: ${{ success() || failure() }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/download-artifact@v3
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
       with:
-        name: coverage-data
+        pattern: coverage-data-*
+        merge-multiple: true
     - run: python -m pip install tox
     - run: tox -e cover-report
 
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: python -m pip install pre-commit tox
     - run: pre-commit run -a
     - run: tox r -e lint
