@@ -5,4 +5,5 @@ prune .github
 # these are redundant, as setuptools-scm includes everything in the git repo
 include LICENSE.txt README.md CHANGES.md
 include tox.ini
+include src/unflatten.pyi src/py.typed
 recursive-include tests *.py

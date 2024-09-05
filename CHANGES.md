@@ -3,6 +3,8 @@
 
 ### Release 0.1.2 (unreleased)
 
+- Added type annotations.
+
 #### Testing
 
 - Test under python 3.10, 3.11, and 3.12.
