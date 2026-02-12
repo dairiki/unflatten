@@ -21,7 +21,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     environment:
       name: pypi
-      url: https://pypi.org/p/barnhunt
+      url: https://pypi.org/project/unflatten/
     permissions:
       id-token: write
     runs-on: ubuntu-latest
